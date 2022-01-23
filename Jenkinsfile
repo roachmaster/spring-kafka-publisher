@@ -18,7 +18,7 @@ node {
             withCredentials([usernamePassword(credentialsId: '87e61f11-079d-4052-b083-ea5859f0f85b', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                 def dockerVersion = sh(returnStdout: true, script: "./gradlew properties -q --no-daemon --console=plain -q | grep '^version:' | awk '{print \$2}'").trim()
                 dockerBuild(dockerName:"${DOCKER_USERNAME}/kafka-publisher:${dockerVersion}",
-                            dockerOpt:"--build-arg JAR_FILE=build/libs/kafka-publisher-${dockerVersion}.jar",
+                            dockerOpt:"--build-arg JAR_FILE=build/libs/ApacheKafkaPublisher-${dockerVersion}.jar",
                             DOCKER_PASSWORD: "${DOCKER_PASSWORD}",
                             DOCKER_USERNAME:"${DOCKER_USERNAME}")
             }
