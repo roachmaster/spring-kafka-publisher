@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-publisher
+spec:
+  selector:
+    matchLabels:
+      app: kafka-publisher
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka-publisher
+    spec:
+      containers:
+        - name: kafka-publisher
+          image: leonardorocha1990/kafka-publisher:0.0.1-SNAPSHOT
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: k3s
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 10
