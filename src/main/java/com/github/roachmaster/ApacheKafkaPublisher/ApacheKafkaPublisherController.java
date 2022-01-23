@@ -2,6 +2,7 @@ package com.github.roachmaster.ApacheKafkaPublisher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/")
 public class ApacheKafkaPublisherController {
     public static Logger logger = LoggerFactory.getLogger(ApacheKafkaPublisherController.class);
+
+    @Autowired
+    
 
     @RequestMapping(value = "publish/{message}", method = RequestMethod.POST)
     public ResponseEntity<String> publishMessage(@PathVariable String message) {
