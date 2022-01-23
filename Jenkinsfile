@@ -32,4 +32,9 @@ node {
             waitForPodToBeReady name:"kafka-publisher", maxNumOfAttempts: 30
         }
     }
+
+        stage("Run Acceptance Test"){
+            sh "./gradlew acceptanceTest --info"
+            cucumber buildStatus: 'null', customCssFiles: '', customJsFiles: '', failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: '**/Cucumber-*.json', jsonReportDirectory: 'build/cucumber-reports', pendingStepsNumber: -1, reportTitle: 'ApacheKafkaPublisher', skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
+        }
 }
