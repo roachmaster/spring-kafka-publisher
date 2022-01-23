@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 public class ApacheKafkaPublisherController {
     public static Logger logger = LoggerFactory.getLogger(ApacheKafkaPublisherController.class);
 
-    @Autowired
-    
-
     @RequestMapping(value = "publish/{message}", method = RequestMethod.POST)
     public ResponseEntity<String> publishMessage(@PathVariable String message) {
         String messageToPublish = "Publishing the following message: " + message;
