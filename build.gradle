@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'idea'
 }
 
 group = 'com.github.roachmaster'
@@ -12,15 +13,53 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets{
+	acceptance {
+
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+configurations {
+	acceptanceImplementation.extendsFrom(implementation)
+	acceptanceRunetime.extendsFrom(runtimeOnly)
+}
+
+idea {
+	module {
+		testSourceDirs += sourceSets.acceptance.java.srcDirs
+		scopes.TEST.plus += [ configurations.acceptanceCompileClasspath ]
+	}
+}
+
+task acceptanceTest(type: Test){
+	description = 'Runs the acceptance tests.'
+	group = 'verification'
+	testClassesDirs = sourceSets.acceptance.output.classesDirs
+	classpath = sourceSets.acceptance.runtimeClasspath
+	useJUnitPlatform()
+	systemProperty("cucumber.junit-platform.naming-strategy", "long")
+	systemProperty("cucumber.plugin","json:build/cucumber-reports/Cucumber-ApacheKafkaPublisher.json,pretty");
+	systemProperty("cucumber.publish.quiet", "true")
+}
+
+check.dependsOn(acceptanceTest)
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
-}
 
-tasks.named('test') {
-	useJUnitPlatform()
+	acceptanceImplementation 'org.springframework.boot:spring-boot-starter-test'
+	acceptanceImplementation 'io.cucumber:cucumber-junit-platform-engine:7.2.3'
+	acceptanceImplementation 'io.cucumber:cucumber-java:7.2.3'
+	acceptanceImplementation 'org.junit.platform:junit-platform-suite:1.8.2'
+	acceptanceImplementation 'io.cucumber:cucumber-spring:7.2.3'
+	acceptanceImplementation 'org.springframework:spring-webflux'
+	acceptanceImplementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
