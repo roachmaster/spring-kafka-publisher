@@ -4,7 +4,7 @@ node {
     boolean k3sBuild = env.K3S_BUILD.toBoolean()
 
     stage("Clone"){
-        git 'git@github.com:roachmaster/kafka-publisher.git'
+        git 'git@github.com:roachmaster/spring-kafka-publisher.git'
     }
 
     stage("Build"){
