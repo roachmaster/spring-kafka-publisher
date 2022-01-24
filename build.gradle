@@ -43,6 +43,9 @@ task acceptanceTest(type: Test){
 	systemProperty("cucumber.plugin","json:build/cucumber-reports/Cucumber-ApacheKafkaPublisher.json,pretty");
 	systemProperty("cucumber.publish.quiet", "true")
 }
+test {
+	useJUnitPlatform()
+}
 
 check.dependsOn(acceptanceTest)
 
@@ -54,6 +57,8 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	testImplementation 'org.mockito:mockito-core:4.2.0'
+	testImplementation 'org.junit.platform:junit-platform-suite:1.8.2'
 
 	acceptanceImplementation 'org.springframework.boot:spring-boot-starter-test'
 	acceptanceImplementation 'io.cucumber:cucumber-junit-platform-engine:7.2.3'

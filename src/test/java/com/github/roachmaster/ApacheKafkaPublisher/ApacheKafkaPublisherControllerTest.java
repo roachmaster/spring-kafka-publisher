@@ -1,17 +1,23 @@
 package com.github.roachmaster.ApacheKafkaPublisher;
 
+import com.github.roachmaster.ApacheKafkaPublisher.kafka.MessagePublisher;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class ApacheKafkaPublisherControllerTest {
+    @Mock
+    MessagePublisher messagePublisher;
 
-    @Autowired
+    @InjectMocks
     ApacheKafkaPublisherController uut;
 
     @Test
