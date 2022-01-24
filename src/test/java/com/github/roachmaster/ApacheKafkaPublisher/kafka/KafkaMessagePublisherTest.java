@@ -1,7 +1,5 @@
-package com.github.roachmaster.ApacheKafkaPublisher;
+package com.github.roachmaster.ApacheKafkaPublisher.kafka;
 
-import com.github.roachmaster.ApacheKafkaPublisher.kafka.MessagePublisher;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,28 +7,27 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ApacheKafkaPublisherControllerTest {
+class KafkaMessagePublisherTest {
 
     @Mock
-    MessagePublisher messagePublisher;
+    KafkaTemplate<String, String> kafkaTemplate;
 
     @InjectMocks
-    ApacheKafkaPublisherController uut;
+    KafkaMessagePublisher uut;
 
     @Test
-    void publishMessage() {
+    void send() {
         String messageToPublish = "test";
-        when(messagePublisher.send(anyString())).thenReturn(ResponseEntity.ok(messageToPublish));
-        ResponseEntity<String> response = uut.publishMessage(messageToPublish);
+        ResponseEntity<String> response = uut.send(messageToPublish);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(Objects.requireNonNull(response.getBody()).contains(messageToPublish));
     }

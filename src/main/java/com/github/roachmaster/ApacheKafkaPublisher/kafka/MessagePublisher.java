@@ -1,5 +1,7 @@
 package com.github.roachmaster.ApacheKafkaPublisher.kafka;
 
+import org.springframework.http.ResponseEntity;
+
 public interface MessagePublisher {
-    void send(String message);
+    ResponseEntity<String> send(String message);
 }

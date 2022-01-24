@@ -1,21 +1,33 @@
 package com.github.roachmaster.ApacheKafkaPublisher.kafka;
 
+import com.github.roachmaster.ApacheKafkaPublisher.ApacheKafkaPublisherController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class KafkaMessagePublisher implements MessagePublisher {
+    private static final Logger logger = LoggerFactory.getLogger(KafkaMessagePublisher.class);
 
-    @Value("${kafkaTopic}")
-    public String TEST_TOPIC;
+    public final String TEST_TOPIC;
+    public final KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
-    KafkaTemplate<String, String> kafkaTemplate;
+    public KafkaMessagePublisher(KafkaTemplate<String, String> kafkaTemplate,
+                                 @Value("${kafkaTopic}") String TEST_TOPIC) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.TEST_TOPIC = TEST_TOPIC;
+    }
 
     @Override
-    public void send(String message) {
+    public ResponseEntity<String> send(String message) {
+        String messageToPublish = "Publishing the following message: " + message;
+        logger.info(messageToPublish);
         kafkaTemplate.send(TEST_TOPIC, message);
+        return ResponseEntity.ok(messageToPublish);
     }
 }
