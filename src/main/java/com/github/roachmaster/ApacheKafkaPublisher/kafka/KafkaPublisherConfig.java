@@ -3,7 +3,6 @@ package com.github.roachmaster.ApacheKafkaPublisher.kafka;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -57,6 +56,7 @@ public class KafkaPublisherConfig {
         props.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, "300000");
         return props;
     }
+    
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
