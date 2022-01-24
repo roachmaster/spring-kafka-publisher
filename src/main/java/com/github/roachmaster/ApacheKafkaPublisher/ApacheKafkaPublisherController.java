@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/")
 public class ApacheKafkaPublisherController {
 
-    @Autowired
     private MessagePublisher messagePublisher;
+
+    @Autowired
+    public ApacheKafkaPublisherController(MessagePublisher messagePublisher) {
+        this.messagePublisher = messagePublisher;
+    }
 
     @RequestMapping(value = "publish/{message}", method = RequestMethod.POST)
     public ResponseEntity<String> publishMessage(@PathVariable String message) {

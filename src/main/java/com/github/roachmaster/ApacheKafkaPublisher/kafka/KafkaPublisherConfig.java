@@ -56,7 +56,7 @@ public class KafkaPublisherConfig {
         props.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, "300000");
         return props;
     }
-    
+
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
