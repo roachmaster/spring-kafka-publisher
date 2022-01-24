@@ -11,6 +11,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class KafkaPublisherConfig {
         return new KafkaAdmin(configs);
     }
     @Bean
-    public ProducerFactory<Integer, String> producerFactory() {
+    public ProducerFactory<String, String> producerFactory() {
         return new DefaultKafkaProducerFactory<>(senderProps());
     }
 
@@ -52,5 +53,9 @@ public class KafkaPublisherConfig {
         props.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, "1000");
         props.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, "300000");
         return props;
+    }
+    @Bean
+    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
+        return new KafkaTemplate<>(producerFactory);
     }
 }
