@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestPropertySource(properties = {"classpath:"})
 @ActiveProfiles("bdd")
 public class ApacheKafkaRestApiSteps {
+    
     @Autowired
     ApacheKafkaPublisherRestApiClient apacheKafkaPublisherRestApiClient;
 

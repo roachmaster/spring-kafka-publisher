@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class ApacheKafkaPublisherCucumberConfig {
     Logger logger = LoggerFactory.getLogger(ApacheKafkaPublisherCucumberConfig.class);
+
     @Value("${uri}")
     public String APACHE_KAFKA_PUBLISHER_URI;
 
