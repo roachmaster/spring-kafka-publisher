@@ -3,6 +3,7 @@ package com.github.roachmaster.ApacheKafkaPublisher.kafka;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -35,10 +36,11 @@ public class KafkaPublisherConfig {
     @Bean
     public KafkaAdmin admin(){
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kube2:30092");
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-k3s.default:9092");
         configs.put(AdminClientConfig.RETRY_BACKOFF_MS_CONFIG,"1000");
         return new KafkaAdmin(configs);
     }
+
     @Bean
     public ProducerFactory<String, String> producerFactory() {
         return new DefaultKafkaProducerFactory<>(senderProps());
@@ -46,8 +48,9 @@ public class KafkaPublisherConfig {
 
     private Map<String, Object> senderProps() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kube2:30092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-k3s.default:9092");
         props.put(ProducerConfig.LINGER_MS_CONFIG, 10);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.ACKS_CONFIG, "all");
         props.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, "1000");
